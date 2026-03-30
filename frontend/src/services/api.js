@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-// Use environment variable or fallback to production URL
+// For Vercel deployment, use environment variable
 const API_URL = import.meta.env.VITE_API_URL || 
   (import.meta.env.PROD 
-    ? 'https://user-file-upload-api.onrender.com/api'  // Replace with your actual Render URL
+    ? 'https://file-upload-render.onrender.com/api'  // Your Render backend URL
     : 'http://localhost:3000/api');
 
 const api = axios.create({
@@ -13,7 +13,7 @@ const api = axios.create({
   },
 });
 
-// Add request interceptor for logging
+// Add request interceptor for logging (optional)
 api.interceptors.request.use(
   (config) => {
     console.log(`📤 ${config.method.toUpperCase()} ${config.url}`);

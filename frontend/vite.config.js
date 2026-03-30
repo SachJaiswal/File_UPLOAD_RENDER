@@ -7,7 +7,7 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': {
-        target: 'http://localhost:3000',
+        target: 'https://file-upload-render.onrender.com', // Your Render backend URL
         changeOrigin: true,
       },
     },
@@ -16,13 +16,5 @@ export default defineConfig({
     outDir: 'dist',
     sourcemap: false,
     minify: 'terser',
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom', 'axios'],
-          ui: ['react-dropzone'],
-        },
-      },
-    },
   },
 })
