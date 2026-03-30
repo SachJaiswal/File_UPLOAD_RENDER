@@ -1,10 +1,12 @@
 import axios from 'axios';
 
-// For Vercel deployment, use environment variable
+// Use your actual Render backend URL
 const API_URL = import.meta.env.VITE_API_URL || 
   (import.meta.env.PROD 
-    ? 'https://file-upload-render.onrender.com/api'  // Your Render backend URL
+    ? 'https://file-upload-render.onrender.com/api'  // Your actual Render URL
     : 'http://localhost:3000/api');
+
+console.log('🌐 API URL:', API_URL); // Debug log
 
 const api = axios.create({
   baseURL: API_URL,
@@ -13,10 +15,10 @@ const api = axios.create({
   },
 });
 
-// Add request interceptor for logging (optional)
+// Request interceptor for debugging
 api.interceptors.request.use(
   (config) => {
-    console.log(`📤 ${config.method.toUpperCase()} ${config.url}`);
+    console.log(`📤 ${config.method.toUpperCase()} ${config.baseURL}${config.url}`);
     return config;
   },
   (error) => {
@@ -24,11 +26,14 @@ api.interceptors.request.use(
   }
 );
 
-// Add response interceptor for error handling
+// Response interceptor for error handling
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    console.log(`✅ ${response.status} ${response.config.url}`);
+    return response;
+  },
   (error) => {
-    console.error('API Error:', error.response?.data || error.message);
+    console.error('❌ API Error:', error.response?.status, error.response?.data || error.message);
     return Promise.reject(error);
   }
 );
